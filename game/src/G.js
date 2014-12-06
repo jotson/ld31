@@ -6,7 +6,12 @@ var G = {
     height: 360, /* stage height in pixels */
 
     world: {
-        gravity: 1000
+        gravity: 2000,
+        playerAcceleration: 1500,
+        playerJumpSpeed: -600,
+        playerMaxSpeed: 500,
+        playerDrag: 1000,
+        playerMass: 1
     },
 
     sfx: {}, /* sound effects */
