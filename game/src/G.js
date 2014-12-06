@@ -8,7 +8,8 @@ var G = {
     world: {
         gravity: 2000,
         playerAcceleration: 1500,
-        playerJumpSpeed: -600,
+        playerJumpSpeed: -500,
+        playerJumpDuration: 200,
         playerMaxSpeed: 500,
         playerDrag: 1000,
         playerMass: 1

@@ -38,8 +38,10 @@ GameState.prototype.movePlayer = function() {
         G.player.body.acceleration.x = 0;
     }
 
-    if (G.player.body.touching.down) G.player.canJump = true;
-    if (G.player.canJump && this.input.keyboard.downDuration(Phaser.Keyboard.UP, 150)) {
+    if (G.player.body.touching.down) {
+        G.player.canJump = true;
+    }
+    if (G.player.canJump && this.input.keyboard.downDuration(Phaser.Keyboard.UP, G.world.playerJumpDuration)) {
         G.player.body.velocity.y = G.world.playerJumpSpeed;
     }
     if (!this.input.keyboard.isDown(Phaser.Keyboard.UP)) {
@@ -103,6 +105,9 @@ GameState.prototype.buildWorld = function() {
                 game.physics.enable(g, Phaser.Physics.ARCADE);
                 g.body.allowGravity = false;
                 g.body.immovable = true;
+                g.body.checkCollision.down = false;
+                g.body.checkCollision.left = false;
+                g.body.checkCollision.right = false;
                 G.ground.add(g);
             }
         }
