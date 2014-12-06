@@ -86,32 +86,35 @@ GameState.prototype.addPlayer = function() {
 };
 
 GameState.prototype.buildWorld = function() {
-    // Set top world boundary above the top of the camera so that
-    // the player can jump without hitting his head on the sky.
-    game.world.setBounds(0, -game.height, game.width, game.height*2);
+    var groundSize = 32;
+
+    // Set world boundary slightly larger than the camera area to allow enemies to be
+    // created off camera without falling out of the world and to allow the player to
+    // jump through the top of the screen.
+    var xOffset = groundSize * 2;
+    game.world.setBounds(-xOffset, -game.height, game.width + xOffset * 2, game.height*2);
 
     // Ground
     var world = [
-        '....................',
-        '....................',
-        '....................',
-        '#####..........#####',
-        '....................',
-        '....................',
-        '........####........',
-        '....................',
-        '....................',
-        '....................',
-        '####################',
+        '........................',
+        '........................',
+        '........................',
+        '#######..........#######',
+        '........................',
+        '........................',
+        '..........####..........',
+        '........................',
+        '........................',
+        '........................',
+        '########################',
     ];
-    var groundSize = 32;
 
     G.ground = game.add.group();
 
     for(var i = 0; i < world.length; i++) {
         for(var j = 0; j < world[i].length; j++) {
             if (world[i].substr(j, 1) == '#') {
-                x = j * groundSize;
+                x = j * groundSize - xOffset;
                 y = i * groundSize + game.height % groundSize;
 
                 var g = game.add.sprite(x, y, 'sprites', 'ground-00.png');
