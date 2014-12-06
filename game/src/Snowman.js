@@ -11,7 +11,6 @@ var Snowman = function(x, y) {
     this.body.mass = G.snowmanMass;
     this.body.maxVelocity.setTo(G.snowmanMaxSpeed, G.snowmanMaxSpeed * 10);
     this.body.collideWorldBounds = false;
-    this.body.checkCollision.up = false;
     this.body.bounce.set(G.snowmanBounce, G.snowmanBounce * 0.3);
 
     // this.animations.add('default', [0,1,2], 10, true);

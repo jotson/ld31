@@ -30,8 +30,12 @@ GameState.prototype.create = function() {
 GameState.prototype.update = function() {
     // Collide player with ground
     game.physics.arcade.collide(G.player, G.ground);
+    game.physics.arcade.collide(G.player, G.enemies, function(p, e) {
+        if (p.body.touching.down && !p.body.touching.left && !p.body.touching.right) {
+            p.body.velocity.y = G.playerJumpSpeed;
+        }
+    });
     game.physics.arcade.collide(G.enemies, G.ground);
-    game.physics.arcade.collide(G.enemies, G.player);
 
     this.movePlayer();
 
@@ -55,8 +59,12 @@ GameState.prototype.movePlayer = function() {
     }
 
     if (G.player.body.touching.down) {
+        G.player.body.drag.set(G.playerDrag, 0);
         G.player.canJump = true;
+    } else {
+        G.player.body.drag.set(0);
     }
+
     if (G.player.canJump && this.input.keyboard.downDuration(Phaser.Keyboard.UP, G.playerJumpDuration)) {
         G.player.body.velocity.y = G.playerJumpSpeed;
     }
@@ -73,7 +81,7 @@ GameState.prototype.resetGame = function() {
     game.physics.arcade.gravity.y = G.gravity;
 
     // Adjustment for physics tunneling
-    game.physics.arcade.OVERLAP_BIAS = G.groundSize * 0.5;
+    game.physics.arcade.OVERLAP_BIAS = G.groundSize * 0.75;
 };
 
 GameState.prototype.addPlayer = function() {
@@ -86,7 +94,6 @@ GameState.prototype.addPlayer = function() {
     G.player.body.checkCollision.up = false;
     G.player.body.mass = G.playerMass;
     G.player.body.bounce.set(G.playerBounce, 0);
-    G.player.body.drag.setTo(G.playerDrag, 0);
     G.player.body.maxVelocity.setTo(G.playerMaxSpeed, G.playerMaxSpeed * 10);
 };
 
