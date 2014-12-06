@@ -6,6 +6,7 @@ var Snowman = function(x, y) {
     this.anchor.setTo(0.5, 0.5);
     this.checkWorldBounds = true;
     this.outOfBoundsKill = true;
+    this.health = G.snowmanHealth;
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.mass = G.snowmanMass;
@@ -33,13 +34,18 @@ Snowman.prototype.update = function() {
         this.changeState(this.myNextState);
     }
 
+    // Hit player
     if (this.myState == this.MOVING && game.physics.arcade.distanceBetween(G.player, this) < G.player.width * 2) {
         this.changeState(this.ATTACK);
+        G.player.damage(1);
     }
+
+    // Hit fuel
     if (this.myState == this.MOVING) {
         G.fuelGroup.forEachAlive(function(f) {
             if (game.physics.arcade.distanceBetween(f, this) < f.width * 2) {
                 this.changeState(this.ATTACK);
+                f.damage(1);
             }
         }, this);
     }

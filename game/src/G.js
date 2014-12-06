@@ -14,6 +14,7 @@ var G = {
     playerDrag: 1000,
     playerMass: 1,
     playerBounce: 0.3,
+    playerHealth: 10,
 
     snowmanSpeed: 250,
     snowmanJump: 400,
@@ -24,6 +25,7 @@ var G = {
     snowmanAttackTime: 1000,
     snowmanMass: 10,
     snowmanBounce: 0.8,
+    snowmanHealth: 10,
 
     fuel: 0,
     fuelDisplay: 0,
@@ -34,6 +36,7 @@ var G = {
     fuelDrag: 300,
     fuelBounce: 0.8,
     fuelMaxSpeed: 50,
+    fuelHealth: 1,
 
     groundSize: 32,
 

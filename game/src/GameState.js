@@ -147,6 +147,7 @@ GameState.prototype.addPlayer = function() {
     G.player = game.add.sprite(game.width/2, 50, 'sprites', 'player-00.png');
     G.player.width = 48;
     G.player.height = 48;
+    G.player.health = G.playerHealth;
     G.player.anchor.setTo(0.5, 0.5);
     game.physics.enable(G.player, Phaser.Physics.ARCADE);
     G.player.body.collideWorldBounds = true;

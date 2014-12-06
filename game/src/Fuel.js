@@ -4,6 +4,7 @@ var Fuel = function(x, y) {
     this.anchor.setTo(0.5, 0.5);
     this.checkWorldBounds = true;
     this.outOfBoundsKill = true;
+    this.health = G.fuelHealth;
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.mass = G.fuelMass;
