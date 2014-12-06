@@ -5,15 +5,19 @@ var G = {
     width: 640, /* stage width in pixels */
     height: 360, /* stage height in pixels */
 
-    world: {
-        gravity: 2000,
-        playerAcceleration: 1500,
-        playerJumpSpeed: -500,
-        playerJumpDuration: 200,
-        playerMaxSpeed: 500,
-        playerDrag: 1000,
-        playerMass: 1
-    },
+    gravity: 2000,
+
+    playerAcceleration: 1500,
+    playerJumpSpeed: -500,
+    playerJumpDuration: 200,
+    playerMaxSpeed: 500,
+    playerDrag: 1000,
+    playerMass: 2,
+
+    snowmanAcceleration: 500,
+    snowmanMaxSpeed: 250,
+    snowmanDrag: 1000,
+    snowmanMass: 1,
 
     sfx: {}, /* sound effects */
 

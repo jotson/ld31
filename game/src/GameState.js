@@ -1,15 +1,20 @@
 var GameState = function(game) {
     this.name = 'game';
+
 };
 
 GameState.prototype.create = function() {
     G.setupStage();
+
+    G.enemies = game.add.group();
 
     this.resetGame();
 
     this.buildWorld();
 
     this.addPlayer();
+
+    Snowman.create(320, 10);
 
     if (G.devMode) {
         this.fps = game.add.text(5, 5, '', { font: '14px ' + G.mainFont, fill: '#ffffff' });
@@ -20,6 +25,8 @@ GameState.prototype.create = function() {
 GameState.prototype.update = function() {
     // Collide player with ground
     game.physics.arcade.collide(G.player, G.ground);
+    game.physics.arcade.collide(G.enemies, G.ground);
+    game.physics.arcade.collide(G.enemies, G.player);
 
     this.movePlayer();
 
@@ -31,10 +38,10 @@ GameState.prototype.update = function() {
 GameState.prototype.movePlayer = function() {
     if (this.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
         if (G.player.body.velocity.x > 0) G.player.body.velocity.x = G.player.body.velocity.x * 0.8;
-        G.player.body.acceleration.x = -G.world.playerAcceleration;
+        G.player.body.acceleration.x = -G.playerAcceleration;
     } else if (this.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
         if (G.player.body.velocity.x < 0) G.player.body.velocity.x = G.player.body.velocity.x * 0.8;
-        G.player.body.acceleration.x = G.world.playerAcceleration;
+        G.player.body.acceleration.x = G.playerAcceleration;
     } else {
         G.player.body.acceleration.x = 0;
     }
@@ -42,8 +49,8 @@ GameState.prototype.movePlayer = function() {
     if (G.player.body.touching.down) {
         G.player.canJump = true;
     }
-    if (G.player.canJump && this.input.keyboard.downDuration(Phaser.Keyboard.UP, G.world.playerJumpDuration)) {
-        G.player.body.velocity.y = G.world.playerJumpSpeed;
+    if (G.player.canJump && this.input.keyboard.downDuration(Phaser.Keyboard.UP, G.playerJumpDuration)) {
+        G.player.body.velocity.y = G.playerJumpSpeed;
     }
     if (!this.input.keyboard.isDown(Phaser.Keyboard.UP)) {
         G.player.canJump = false;
@@ -60,7 +67,7 @@ GameState.prototype.resetGame = function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // Set gravity
-    game.physics.arcade.gravity.y = G.world.gravity;
+    game.physics.arcade.gravity.y = G.gravity;
 };
 
 GameState.prototype.addPlayer = function() {
@@ -69,9 +76,10 @@ GameState.prototype.addPlayer = function() {
     G.player.height = 48;
     game.physics.enable(G.player, Phaser.Physics.ARCADE);
     G.player.body.collideWorldBounds = true;
-    G.player.body.mass = G.world.playerMass;
-    G.player.body.drag.setTo(G.world.playerDrag, 0);
-    G.player.body.maxVelocity.setTo(G.world.playerMaxSpeed, G.world.playerMaxSpeed * 10);
+    G.player.body.checkCollision.up = false;
+    G.player.body.mass = G.playerMass;
+    G.player.body.drag.setTo(G.playerDrag, 0);
+    G.player.body.maxVelocity.setTo(G.playerMaxSpeed, G.playerMaxSpeed * 10);
 };
 
 GameState.prototype.buildWorld = function() {
@@ -105,6 +113,7 @@ GameState.prototype.buildWorld = function() {
                 var g = game.add.sprite(x, y, 'sprites', 'ground-00.png');
                 game.physics.enable(g, Phaser.Physics.ARCADE);
                 g.body.allowGravity = false;
+                g.body.mass = 100;
                 g.body.immovable = true;
                 g.body.checkCollision.down = false;
                 g.body.checkCollision.left = false;
