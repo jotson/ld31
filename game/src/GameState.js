@@ -13,6 +13,7 @@ GameState.prototype.create = function() {
 
     if (G.devMode) {
         this.fps = game.add.text(5, 5, '', { font: '14px ' + G.mainFont, fill: '#ffffff' });
+        game.add.text(65, 5, '** DEVELOPMENT ­— DEVELOPMENT — DEVELOPMENT — DEVELOPMENT — DEVELOPMENT **', { font: '14px ' + G.mainFont, fill: '#ffffff' });
     }
 };
 
