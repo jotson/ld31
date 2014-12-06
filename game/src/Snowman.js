@@ -9,7 +9,7 @@ var Snowman = function(x, y) {
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.mass = G.snowmanMass;
-    this.body.maxVelocity.setTo(G.snowmanMaxSpeed, G.snowmanMaxSpeed * 10);
+    this.body.maxVelocity.setTo(G.snowmanMaxSpeed, Number.POSITIVE_INFINITY);
     this.body.collideWorldBounds = false;
     this.body.bounce.set(G.snowmanBounce, G.snowmanBounce * 0.3);
 
@@ -35,6 +35,13 @@ Snowman.prototype.update = function() {
 
     if (this.myState == this.MOVING && game.physics.arcade.distanceBetween(G.player, this) < G.player.width * 2) {
         this.changeState(this.ATTACK);
+    }
+    if (this.myState == this.MOVING) {
+        G.fuelGroup.forEachAlive(function(f) {
+            if (game.physics.arcade.distanceBetween(f, this) < f.width * 2) {
+                this.changeState(this.ATTACK);
+            }
+        }, this);
     }
 };
 
@@ -73,11 +80,11 @@ Snowman.prototype.changeState = function(state) {
 
 Snowman.create = function() {
     var s;
-    s = G.enemies.getFirstDead();
+    s = G.enemiesGroup.getFirstDead();
     if (s === null) {
-        s = G.enemies.add(new Snowman(x, y));
+        s = G.enemiesGroup.add(new Snowman(0, 0));
     }
-    s.reset(x, y);
+    s.reset(0, 0);
     s.y = game.height - G.groundSize - s.height/2;
     if (game.math.chanceRoll(50)) {
         s.x = game.width + G.groundSize;

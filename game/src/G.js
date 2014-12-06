@@ -5,7 +5,7 @@ var G = {
     width: 640, /* stage width in pixels */
     height: 360, /* stage height in pixels */
 
-    gravity: 2000,
+    gravity: 2400,
 
     playerAcceleration: 1500,
     playerJumpSpeed: -500,
@@ -24,6 +24,16 @@ var G = {
     snowmanAttackTime: 1000,
     snowmanMass: 10,
     snowmanBounce: 0.8,
+
+    fuel: 0,
+    fuelDisplay: 0,
+    fuelValue: 25, /* units */
+    fuelStart: 100, /* units */
+    fuelBurnRate: 20, /* units per second */
+    fuelMass: 100,
+    fuelDrag: 300,
+    fuelBounce: 0.8,
+    fuelMaxSpeed: 50,
 
     groundSize: 32,
 

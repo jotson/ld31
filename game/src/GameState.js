@@ -11,7 +11,17 @@ GameState.prototype.create = function() {
 
     G.setupStage();
 
-    G.enemies = game.add.group();
+    // Start physics
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    // Set gravity
+    game.physics.arcade.gravity.y = G.gravity;
+
+    // Adjustment for physics tunneling
+    game.physics.arcade.OVERLAP_BIAS = G.groundSize * 0.75;
+
+    G.enemiesGroup = game.add.group();
+    G.fuelGroup = game.add.group();
 
     this.resetGame();
 
@@ -21,23 +31,40 @@ GameState.prototype.create = function() {
 
     Snowman.create();
 
+    Fuel.create();
+
+    this.addUI();
+
     if (G.devMode) {
-        this.fps = game.add.text(5, 5, '', { font: '14px ' + G.mainFont, fill: '#ffffff' });
-        game.add.text(65, 5, '** DEVELOPMENT ­— DEVELOPMENT — DEVELOPMENT — DEVELOPMENT — DEVELOPMENT **', { font: '14px ' + G.mainFont, fill: '#ffffff' });
+        this.fps = game.add.text(5, game.height - 24, '', { font: '14px ' + G.mainFont, fill: '#ffffff' });
+        game.add.text(65, game.height - 24, '** DEVELOPMENT ­— DEVELOPMENT — DEVELOPMENT — DEVELOPMENT — DEVELOPMENT **', { font: '14px ' + G.mainFont, fill: '#ffffff' });
     }
 };
 
 GameState.prototype.update = function() {
-    // Collide player with ground
+    // Collisions
     game.physics.arcade.collide(G.player, G.ground);
-    game.physics.arcade.collide(G.player, G.enemies, function(p, e) {
+    game.physics.arcade.collide(G.player, G.enemiesGroup, function(p, e) {
         if (p.body.touching.down && !p.body.touching.left && !p.body.touching.right) {
             p.body.velocity.y = G.playerJumpSpeed;
         }
     });
-    game.physics.arcade.collide(G.enemies, G.ground);
+    game.physics.arcade.collide(G.enemiesGroup, G.ground);
+    game.physics.arcade.collide(G.enemiesGroup, G.fuelGroup);
+    game.physics.arcade.collide(G.fuelGroup, G.ground);
 
-    this.movePlayer();
+    // Input
+    this.processPlayerInput();
+
+    // Player collecting fuel
+    G.fuelGroup.forEachAlive(function(f) {
+        if (f.state !== f.COLLECTED && game.physics.arcade.distanceBetween(G.player, f) < f.width * 2) {
+            console.log('got fuel!');
+            f.changeState(f.COLLECTED);
+            G.fuel += G.fuelValue;
+            Fuel.create();
+        }
+    }, this);
 
     if (G.devMode) {
         if (game.time.fps != this.lastFps) {
@@ -45,9 +72,12 @@ GameState.prototype.update = function() {
             this.lastFps = game.time.fps;
         }
     }
+
+    this.updateUI();
 };
 
-GameState.prototype.movePlayer = function() {
+GameState.prototype.processPlayerInput = function() {
+    // Left, right, idle
     if (this.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
         if (G.player.body.velocity.x > 0) G.player.body.velocity.x = G.player.body.velocity.x * 0.8;
         G.player.body.acceleration.x = -G.playerAcceleration;
@@ -58,6 +88,7 @@ GameState.prototype.movePlayer = function() {
         G.player.body.acceleration.x = 0;
     }
 
+    // Jump
     if (G.player.body.touching.down) {
         G.player.body.drag.set(G.playerDrag, 0);
         G.player.canJump = true;
@@ -71,17 +102,45 @@ GameState.prototype.movePlayer = function() {
     if (!this.input.keyboard.isDown(Phaser.Keyboard.UP)) {
         G.player.canJump = false;
     }
+
+    // Flamethrower
+    if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+        if (G.fuel > 0) {
+            G.fuel -= game.time.physicsElapsed * G.fuelBurnRate;
+        }
+        if (G.fuel > 50) {
+            // Normal animation
+        }
+        if (G.fuel > 25) {
+            // Low animation
+        }
+        if (G.fuel <= 0) {
+            // Empty animation
+            G.fuel = 0;
+        }
+    }
 };
 
 GameState.prototype.resetGame = function() {
-    // Start physics
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+    G.fuel = G.fuelStart;
+};
 
-    // Set gravity
-    game.physics.arcade.gravity.y = G.gravity;
+GameState.prototype.addUI = function() {
+    G.ui = game.add.group();
 
-    // Adjustment for physics tunneling
-    game.physics.arcade.OVERLAP_BIAS = G.groundSize * 0.75;
+    G.ui.fuelText = game.add.text(5, 5, "", { font: '14px ' + G.mainFont, fill: '#ffffff' });
+};
+
+GameState.prototype.updateUI = function() {
+    if (G.ui === undefined) return;
+
+    // Update fuel display
+    if (Math.abs(G.fuel - G.fuelDisplay) < 1) G.fuelDisplay = G.fuel;
+    if (G.fuel != G.fuelDisplay) {
+        var delta = Math.ceil((G.fuel - G.fuelDisplay) * 0.10);
+        G.fuelDisplay += delta;
+    }
+    G.ui.fuelText.setText("FUEL: " + Math.ceil(G.fuelDisplay));
 };
 
 GameState.prototype.addPlayer = function() {
@@ -94,7 +153,7 @@ GameState.prototype.addPlayer = function() {
     G.player.body.checkCollision.up = false;
     G.player.body.mass = G.playerMass;
     G.player.body.bounce.set(G.playerBounce, 0);
-    G.player.body.maxVelocity.setTo(G.playerMaxSpeed, G.playerMaxSpeed * 10);
+    G.player.body.maxVelocity.setTo(G.playerMaxSpeed, Number.POSITIVE_INFINITY);
 };
 
 GameState.prototype.buildWorld = function() {
