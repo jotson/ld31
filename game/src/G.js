@@ -13,11 +13,19 @@ var G = {
     playerMaxSpeed: 500,
     playerDrag: 1000,
     playerMass: 1,
+    playerBounce: 0.3,
 
-    snowmanAcceleration: 500,
-    snowmanMaxSpeed: 250,
-    snowmanDrag: 1000,
-    snowmanMass: 2,
+    snowmanSpeed: 250,
+    snowmanJump: 400,
+    snowmanMaxSpeed: 150,
+    snowmanDrag: 300,
+    snowmanMovementTime: 150,
+    snowmanWaitTime: 1750,
+    snowmanAttackTime: 1000,
+    snowmanMass: 10,
+    snowmanBounce: 0.8,
+
+    groundSize: 32,
 
     sfx: {}, /* sound effects */
 
