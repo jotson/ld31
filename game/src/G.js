@@ -12,12 +12,12 @@ var G = {
     playerJumpDuration: 200,
     playerMaxSpeed: 500,
     playerDrag: 1000,
-    playerMass: 2,
+    playerMass: 1,
 
     snowmanAcceleration: 500,
     snowmanMaxSpeed: 250,
     snowmanDrag: 1000,
-    snowmanMass: 1,
+    snowmanMass: 2,
 
     sfx: {}, /* sound effects */
 
