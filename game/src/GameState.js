@@ -4,6 +4,11 @@ var GameState = function(game) {
 };
 
 GameState.prototype.create = function() {
+    if (G.devMode) {
+        // Advanced timing (for fps)
+        game.time.advancedTiming = true;
+    }
+
     G.setupStage();
 
     G.enemies = game.add.group();
@@ -31,7 +36,10 @@ GameState.prototype.update = function() {
     this.movePlayer();
 
     if (G.devMode) {
-        this.fps.setText('FPS: ' + game.time.fps);
+        if (game.time.fps != this.lastFps) {
+            this.fps.setText('FPS: ' + game.time.fps);
+            this.lastFps = game.time.fps;
+        }
     }
 };
 
@@ -58,11 +66,6 @@ GameState.prototype.movePlayer = function() {
 };
 
 GameState.prototype.resetGame = function() {
-    if (G.devMode) {
-        // Advanced timing (for fps)
-        game.time.advancedTiming = true;
-    }
-
     // Start physics
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -104,6 +107,7 @@ GameState.prototype.buildWorld = function() {
     var groundSize = 32;
 
     G.ground = game.add.group();
+
     for(var i = 0; i < world.length; i++) {
         for(var j = 0; j < world[i].length; j++) {
             if (world[i].substr(j, 1) == '#') {
