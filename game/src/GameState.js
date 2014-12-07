@@ -80,6 +80,9 @@ GameState.prototype.update = function() {
     if (!G.player.alive) {
         this.gameOver = true;
 
+        this.fuelTimer.stop();
+        this.enemyTimer.stop();
+
         var t = game.add.text(0, 0, 'GAME OVER', { font: '48px ' + G.mainFont, fill: '#ffffff' });
         t.x = game.width/2 - t.getBounds().width/2;
         t.y = game.height * 0.3;
