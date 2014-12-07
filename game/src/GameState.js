@@ -23,6 +23,8 @@ GameState.prototype.create = function() {
 
     this.buildWorld();
 
+    G.makeClouds();
+    
     G.enemiesGroup = game.add.group();
 
     G.fuelGroup = game.add.group();
@@ -47,6 +49,10 @@ GameState.prototype.resetGame = function() {
     this.gameOver = false;
 
     G.fuel = G.fuelStart;
+    G.fuelDisplay = G.fuel;
+
+    G.score = 0;
+    G.scoreDisplay = G.score;
 
     G.gameTimer = 0; /* millis */
 
@@ -83,6 +89,7 @@ GameState.prototype.update = function() {
         if (p.body.touching.down && !p.body.touching.left && !p.body.touching.right) {
             p.body.velocity.y = G.playerJumpSpeed;
             target.damage(G.snowmanHealth / 3);
+            G.score += G.snowmanScore / 2;
         }
     });
     game.physics.arcade.collide(G.enemiesGroup, G.ground);
@@ -90,6 +97,7 @@ GameState.prototype.update = function() {
     game.physics.arcade.collide(G.fuelGroup, G.ground);
     game.physics.arcade.overlap(this.flameThrower, [ G.enemiesGroup, G.fuelGroup ], function(flame, target) {
         target.damage(1);
+        G.score += G.flameScore;
     });
 
     if (this.gameOver) return;
@@ -219,19 +227,31 @@ GameState.prototype.processPlayerInput = function() {
 GameState.prototype.addUI = function() {
     G.ui = game.add.group();
 
-    G.ui.fuelText = game.add.text(10, 5, "", { font: '36px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 5 });
+    G.ui.fuelText = game.add.text(10, 5, "", { font: '48px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 5 });
+    G.ui.scoreText = game.add.text(50, 5, "", { font: '48px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 5 });
 };
 
 GameState.prototype.updateUI = function() {
     if (G.ui === undefined) return;
 
     // Update fuel display
+    var delta;
     if (Math.abs(G.fuel - G.fuelDisplay) < 1) G.fuelDisplay = G.fuel;
     if (G.fuel != G.fuelDisplay) {
-        var delta = Math.ceil((G.fuel - G.fuelDisplay) * 0.10);
+        delta = Math.ceil((G.fuel - G.fuelDisplay) * 0.10);
         G.fuelDisplay += delta;
     }
     G.ui.fuelText.setText("FUEL: " + Math.ceil(G.fuelDisplay));
+
+    // Update score display
+    if (Math.abs(G.score - G.scoreDisplay) < 1) G.scoreDisplay = G.score;
+    if (G.score != G.scoreDisplay) {
+        delta = Math.ceil((G.score - G.scoreDisplay) * 0.10);
+        G.scoreDisplay += delta;
+    }
+    G.ui.scoreText.setText("SCORE: " + Math.ceil(G.scoreDisplay));
+    G.ui.scoreText.x = game.width/2 - G.ui.scoreText.getBounds().width/2;
+
 };
 
 GameState.prototype.buildWorld = function() {

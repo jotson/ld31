@@ -4,6 +4,7 @@ var Boss = function(x, y) {
     this.subSprite.tint = 0xff0000;
 
     this.events.onKilled.add(function() {
+        G.score += G.bossScore;
         this.subSprite.destroy();
         this.healthbar.destroy();
         this.destroy(true);

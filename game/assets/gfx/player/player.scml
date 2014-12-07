@@ -7,6 +7,8 @@
         <file id="3" name="player_head.png" width="640" height="640" pivot_x="0.426563" pivot_y="0.623437"/>
         <file id="4" name="player_gun.png" width="640" height="640" pivot_x="0.278125" pivot_y="0.595313"/>
         <file id="5" name="player_head-hurt.png" width="640" height="640" pivot_x="0" pivot_y="1"/>
+        <file id="6" name="player_arm-r.png" width="640" height="640" pivot_x="0" pivot_y="1"/>
+        <file id="7" name="player_arm-l.png" width="640" height="640" pivot_x="0.629687" pivot_y="0.560937"/>
     </folder>
     <entity id="0" name="player">
         <animation id="0" name="idle" length="2000" interval="100">
@@ -220,7 +222,70 @@
                 </key>
             </timeline>
         </animation>
-        <animation id="2" name="run" length="1000" interval="100">
+        <animation id="2" name="death" length="1" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="6" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="1" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="2" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="1" z_index="3"/>
+                    <object_ref id="4" timeline="4" key="0" z_index="4"/>
+                    <object_ref id="5" timeline="5" key="0" z_index="5"/>
+                </key>
+                <key id="1" time="1">
+                    <object_ref id="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="0" key="3" z_index="2"/>
+                    <object_ref id="3" timeline="4" key="0" z_index="3"/>
+                    <object_ref id="4" timeline="3" key="0" z_index="4"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="player_torso">
+                <key id="0" spin="-1">
+                    <object folder="0" file="0" x="-8.880639" y="264.806034" angle="43.10245" scale_y="1"/>
+                </key>
+                <key id="1" spin="-1">
+                    <object folder="0" file="0" x="-11.603394" y="258.407211" angle="43.10245" scale_y="1"/>
+                </key>
+                <key id="2" time="1" spin="-1">
+                    <object folder="0" file="0" x="10.347971" y="336.76117" pivot_x="0.448437" pivot_y="0.50625" angle="0"/>
+                </key>
+                <key id="3" time="1">
+                    <object folder="0" file="0" x="16.708291" y="339.57269" pivot_x="0.458375" pivot_y="0.510643" angle="0"/>
+                </key>
+            </timeline>
+            <timeline id="1" name="player_leg-r">
+                <key id="0" spin="0">
+                    <object folder="0" file="1" x="98.118911" y="113.988329" angle="119.325653"/>
+                </key>
+            </timeline>
+            <timeline id="2" name="player_leg-l">
+                <key id="0" spin="0">
+                    <object folder="0" file="2" x="162.673472" y="171.430453" angle="39.231469" scale_y="1"/>
+                </key>
+            </timeline>
+            <timeline id="3" name="player_gun">
+                <key id="0" time="1" spin="0">
+                    <object folder="0" file="4" x="-62.279033" y="341.667142" pivot_x="0.288917" pivot_y="0.56535" angle="17.325486"/>
+                </key>
+            </timeline>
+            <timeline id="4" name="player_head">
+                <key id="0" spin="0">
+                    <object folder="0" file="5" x="-111.913029" y="338.507219" pivot_x="0.464768" pivot_y="0.751392" angle="32.004335"/>
+                </key>
+            </timeline>
+            <timeline id="5" name="player_arm-r">
+                <key id="0" spin="0">
+                    <object folder="0" file="6" x="-108.956449" y="197.45535" pivot_x="0.23221" pivot_y="0.592081" angle="92.023626" scale_y="1"/>
+                </key>
+            </timeline>
+            <timeline id="6" name="player_arm-l">
+                <key id="0" spin="0">
+                    <object folder="0" file="7" x="29.15379" y="374.567897" angle="58.185701" scale_x="1" scale_y="1"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="3" name="run" length="1000" interval="100">
             <mainline>
                 <key id="0">
                     <object_ref id="0" timeline="1" key="0" z_index="0"/>
@@ -497,11 +562,6 @@
                     <object folder="0" file="3" x="28.018018" y="327.567568" angle="351.505053"/>
                 </key>
             </timeline>
-        </animation>
-        <animation id="3" name="death" length="1000" interval="100">
-            <mainline>
-                <key id="0"/>
-            </mainline>
         </animation>
     </entity>
 </spriter_data>

@@ -19,6 +19,7 @@ var Snowman = function(x, y) {
     this.subSprite = game.add.sprite(x, y, 'sprites', '');
     this.subSprite.anchor.setTo(0.5, 1);
     this.events.onKilled.add(function() {
+        G.score += G.snowmanScore;
         this.subSprite.kill();
         this.healthbar.kill();
     }, this);

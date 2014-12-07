@@ -1,5 +1,5 @@
 var G = {
-    devMode: true,
+    devMode: false,
 
     game: null,
     width: 1280, /* stage width in pixels */
@@ -27,9 +27,11 @@ var G = {
     snowmanBounce: 0.8,
     snowmanHealth: 60,
     snowmanInterval: 2000, /* millis */
+    snowmanScore: 1000,
 
     bossHealth: 500,
     bossTimeThreshold: 30000, /* millis */
+    bossScore: 10000,
 
     fuel: 0,
     fuelDisplay: 0,
@@ -43,10 +45,15 @@ var G = {
     fuelHealth: 2,
     fuelInterval: 5000, /* millis */
     fuelFallingSpeed: 100,
+    fuelScore: 10,
 
     flameSpeed: 1500,
     flameJitter: 150,
     flameLifetime: 250,
+    flameScore: 5,
+
+    score: 0,
+    scoreDisplay: 0,
 
     groundSize: 64,
 
@@ -114,4 +121,24 @@ G.shake = function() {
     tween = game.add.tween(game.camera)
         .to({ y: ty }, 80, Phaser.Easing.Sinusoidal.InOut, false, 0, 3, true)
         .start();
+};
+
+G.makeClouds = function() {
+    if (G.cloudGroup === undefined) G.cloudGroup = game.add.group();
+
+    var i, cloud;
+    for(i = 0; i < 3; i++) {
+        cloud = game.add.sprite(game.rnd.between(0, game.width), game.rnd.between(0, game.height * 0.5), 'sprites', 'cloud.png');
+        game.physics.enable(cloud, Phaser.Physics.ARCADE);
+        cloud.body.velocity.x = game.rnd.between(5, 40);
+        cloud.body.allowGravity = false;
+        cloud.alpha = 0.5;
+        cloud.checkWorldBounds = true;
+        cloud.outOfBoundsKill = true;
+        cloud.events.onKilled.add(function() {
+            this.x = -this.width;
+            this.y = game.rnd.between(0, game.height * 0.5);
+            this.revive();
+        }, cloud);
+    }
 };
