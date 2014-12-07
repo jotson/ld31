@@ -14,7 +14,7 @@ var G = {
     playerDrag: 2000,
     playerMass: 1,
     playerBounce: 0.3,
-    playerHealth: 10,
+    playerHealth: 5,
 
     snowmanSpeed: 500,
     snowmanJump: 800,
@@ -25,7 +25,7 @@ var G = {
     snowmanAttackTime: 1000,
     snowmanMass: 10,
     snowmanBounce: 0.8,
-    snowmanHealth: 20,
+    snowmanHealth: 60,
     snowmanInterval: 2000, /* millis */
 
     fuel: 0,
