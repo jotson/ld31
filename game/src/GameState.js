@@ -95,7 +95,7 @@ GameState.prototype.update = function() {
     game.physics.arcade.collide(G.player, G.enemiesGroup, function(p, target) {
         if (p.body.touching.down && !p.body.touching.left && !p.body.touching.right) {
             p.body.velocity.y = G.playerJumpSpeed;
-            target.damage(G.snowmanHealth / 3);
+            target.damage(G.snowmanHealth / 2);
             G.score += G.snowmanScore / 2;
         }
     }, null, this);
