@@ -26,10 +26,11 @@ var G = {
     snowmanMass: 10,
     snowmanBounce: 0.8,
     snowmanHealth: 20,
+    snowmanInterval: 2000, /* millis */
 
     fuel: 0,
     fuelDisplay: 0,
-    fuelValue: 25, /* units */
+    fuelValue: 50, /* units */
     fuelStart: 100, /* units */
     fuelBurnRate: 50, /* units per second */
     fuelMass: 100,
@@ -40,8 +41,8 @@ var G = {
     fuelInterval: 5000, /* millis */
     fuelFallingSpeed: 100,
 
-    flameSpeed: 1000,
-    flameJitter: 100,
+    flameSpeed: 1500,
+    flameJitter: 150,
     flameLifetime: 250,
 
     groundSize: 64,

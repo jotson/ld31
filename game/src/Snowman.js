@@ -53,7 +53,7 @@ Snowman.prototype.update = function() {
     if (this.myDirection === Phaser.RIGHT) {
         this.subSprite.scale.x = -1;
     } else {
-        this.subSprite.scale.y = 1;
+        this.subSprite.scale.x = 1;
     }
 
     this.myStateElapsed += game.time.physicsElapsedMS;

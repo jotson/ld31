@@ -45,9 +45,15 @@ GameState.prototype.resetGame = function() {
 
     G.gameTimer = 0; /* millis */
 
+    // Timer for more fuel
     this.fuelTimer = game.time.create(false);
     this.fuelTimer.loop(G.fuelInterval, function() { Fuel.create(); }, this);
     this.fuelTimer.start();
+
+    // Timer for enemies
+    this.enemyTimer = game.time.create(false);
+    this.enemyTimer.loop(G.snowmanInterval, function() { Snowman.create(); }, this);
+    this.enemyTimer.start();
 };
 
 GameState.prototype.update = function() {
@@ -63,7 +69,7 @@ GameState.prototype.update = function() {
     game.physics.arcade.collide(G.enemiesGroup, G.ground);
     game.physics.arcade.collide(G.enemiesGroup, G.fuelGroup);
     game.physics.arcade.collide(G.fuelGroup, G.ground);
-    game.physics.arcade.collide(this.flameThrower, [ G.enemiesGroup, G.fuelGroup ], function(flame, target) {
+    game.physics.arcade.overlap(this.flameThrower, [ G.enemiesGroup, G.fuelGroup ], function(flame, target) {
         target.damage(1);
     });
 
@@ -124,14 +130,17 @@ GameState.prototype.processPlayerInput = function() {
             this.flameThrower.y = G.player.y - 50;
         }
 
+        var range = 1;
+        if (G.fuel < 50) range = 0.5;
+
         if (G.player.myDirection === Phaser.RIGHT) {
             this.flameThrower.x = G.player.x + 80;
-            this.flameThrower.minParticleSpeed.set(G.flameSpeed * 0.8 + G.player.body.velocity.x, -G.flameJitter);
-            this.flameThrower.maxParticleSpeed.set(G.flameSpeed + G.player.body.velocity.x, G.flameJitter);
+            this.flameThrower.minParticleSpeed.set(range * G.flameSpeed * 0.8 + G.player.body.velocity.x, -G.flameJitter);
+            this.flameThrower.maxParticleSpeed.set(range * G.flameSpeed + G.player.body.velocity.x, G.flameJitter);
         } else {
             this.flameThrower.x = G.player.x - 80;
-            this.flameThrower.minParticleSpeed.set(-G.flameSpeed * 0.8 + G.player.body.velocity.x, -G.flameJitter);
-            this.flameThrower.maxParticleSpeed.set(-G.flameSpeed + G.player.body.velocity.x, G.flameJitter);
+            this.flameThrower.minParticleSpeed.set(range * -G.flameSpeed * 0.8 + G.player.body.velocity.x, -G.flameJitter);
+            this.flameThrower.maxParticleSpeed.set(range * -G.flameSpeed + G.player.body.velocity.x, G.flameJitter);
         }
 
         if (G.fuel > 0) {
@@ -139,12 +148,6 @@ GameState.prototype.processPlayerInput = function() {
             this.flameThrower.on = true;
         }
         
-        if (G.fuel > 50) {
-            this.flameThrower.frequency = 1;
-        } else {
-            this.flameThrower.frequency = (100 - G.fuel);
-        }
-
         if (G.fuel <= 0) {
             G.fuel = 0;
         }
