@@ -19,6 +19,7 @@ var Player = function(x, y) {
     this.subSprite.anchor.setTo(0.5, 1);
     this.events.onKilled.add(function() {
         this.subSprite.kill();
+        this.healthbar.kill();
     }, this);
 
     // Health bar

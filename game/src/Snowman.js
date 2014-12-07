@@ -57,7 +57,7 @@ Snowman.prototype.update = function() {
 
     this.healthbar.x = this.x;
     this.healthbar.y = this.y - this.subSprite.height * 0.8;
-    this.healthbar.width = (this.health / G.snowmanHealth) * this.healthbar.texture.frame.width;
+    this.healthbar.width = (this.health / this.maxHealth) * this.healthbar.texture.frame.width;
     if (this.alive && this.healthbar.width < 10) this.healthbar.width = 10;
 
     if (this.myDirection === Phaser.RIGHT) {
@@ -160,6 +160,7 @@ Snowman.create = function() {
     s.healthbar.revive();
 
     s.health = G.snowmanHealth;
+    s.maxHealth = s.health;
 
     s.firstMove = true;
     s.animations.play('default');

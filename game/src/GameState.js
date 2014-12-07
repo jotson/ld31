@@ -57,7 +57,20 @@ GameState.prototype.resetGame = function() {
 
     // Timer for enemies
     this.enemyTimer = game.time.create(false);
-    this.enemyTimer.loop(G.snowmanInterval, function() { Snowman.create(); }, this);
+    this.enemyTimer.loop(G.snowmanInterval, function() {
+        var bossExists = false;
+        for(var i = 0; i < G.enemiesGroup.children; i++) {
+            if (G.enemiesGroup.children[i] instanceof Boss) {
+                bossExists = true;
+                break;
+            }
+        }
+        if (!bossExists && game.math.chanceRoll(10)) {
+            Boss.create();
+        } else {
+            Snowman.create();
+        }
+    }, this);
     this.enemyTimer.start();
 };
 
@@ -81,6 +94,9 @@ GameState.prototype.update = function() {
 
     if (this.gameOver) return;
 
+    // Input
+    this.processPlayerInput();
+
     if (!G.player.alive) {
         this.gameOver = true;
 
@@ -97,9 +113,6 @@ GameState.prototype.update = function() {
 
         game.input.onDown.add(function() { game.state.start('menu'); }, this);
     }
-
-    // Input
-    this.processPlayerInput();
 
     // Player collecting fuel
     G.fuelGroup.forEachAlive(function(f) {
