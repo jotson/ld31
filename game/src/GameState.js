@@ -1,6 +1,5 @@
 var GameState = function(game) {
     this.name = 'game';
-
 };
 
 GameState.prototype.create = function() {
@@ -41,6 +40,8 @@ GameState.prototype.create = function() {
 };
 
 GameState.prototype.resetGame = function() {
+    this.gameOver = false;
+
     G.fuel = G.fuelStart;
 
     G.gameTimer = 0; /* millis */
@@ -73,6 +74,20 @@ GameState.prototype.update = function() {
     game.physics.arcade.overlap(this.flameThrower, [ G.enemiesGroup, G.fuelGroup ], function(flame, target) {
         target.damage(1);
     });
+
+    if (this.gameOver) return;
+
+    if (!G.player.alive) {
+        this.gameOver = true;
+
+        var t = game.add.text(0, 0, 'GAME OVER', { font: '48px ' + G.mainFont, fill: '#ffffff' });
+        t.x = game.width/2 - t.getBounds().width/2;
+        t.y = game.height * 0.3;
+
+        game.add.tween(t).to({ y: t.y + 10 }, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.POSITIVE_INFINITY, true);
+
+        game.input.onDown.add(function() { game.state.start('menu'); }, this);
+    }
 
     // Input
     this.processPlayerInput();
