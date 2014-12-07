@@ -32,6 +32,8 @@ GameState.prototype.create = function() {
 
     G.player = Player.create();
 
+    this.setupSnowmanShrapnel();
+
     this.equipFlamethrower();
 
     G.showTutorial('survive', 'Kill all snowmen!');
@@ -84,7 +86,11 @@ GameState.prototype.resetGame = function() {
 GameState.prototype.update = function() {
     G.gameTimer += game.time.physicsElapsedMS;
 
+    // Turn off snowbits
+    this.snowbits.on = false;
+
     // Collisions
+    game.physics.arcade.collide(this.snowbits, G.ground);
     game.physics.arcade.collide(G.player, G.ground);
     game.physics.arcade.collide(G.player, G.enemiesGroup, function(p, target) {
         if (p.body.touching.down && !p.body.touching.left && !p.body.touching.right) {
@@ -92,14 +98,17 @@ GameState.prototype.update = function() {
             target.damage(G.snowmanHealth / 3);
             G.score += G.snowmanScore / 2;
         }
-    });
+    }, null, this);
     game.physics.arcade.collide(G.enemiesGroup, G.ground);
     game.physics.arcade.collide(G.enemiesGroup, G.fuelGroup);
     game.physics.arcade.collide(G.fuelGroup, G.ground);
     game.physics.arcade.overlap(this.flameThrower, [ G.enemiesGroup, G.fuelGroup ], function(flame, target) {
         target.damage(1);
         G.score += G.flameScore;
-    });
+        this.snowbits.x = target.x;
+        this.snowbits.y = target.y;
+        this.snowbits.on = true;
+    }, null, this);
 
     if (this.gameOver) return;
 
@@ -311,4 +320,20 @@ GameState.prototype.equipFlamethrower = function() {
     this.flameThrower.setAll('body.mass', 0);
     this.flameThrower.start(false, G.flameLifetime, 1);
     this.flameThrower.on = false;
+};
+
+GameState.prototype.setupSnowmanShrapnel = function() {
+    this.snowbits = game.add.emitter(0, 0, 1000);
+    this.snowbits.makeParticles( 'sprites', 'snowball.png' );
+    this.snowbits.gravity = G.gravity;
+    this.snowbits.minParticleScale = 0.2;
+    this.snowbits.maxParticleScale = 0.4;
+    this.snowbits.particleDrag = new Phaser.Point(200, 0);
+    this.snowbits.angularDrag = 200;
+    this.snowbits.setXSpeed(-300, 300);
+    this.snowbits.setYSpeed(-500, -2000);
+    this.snowbits.area = new Phaser.Rectangle(0, 0, 20, 60);
+    this.snowbits.setAll('body.mass', 1);
+    this.snowbits.start(false, 30000, 1);
+    this.snowbits.on = false;
 };
