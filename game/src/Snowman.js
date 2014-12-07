@@ -101,6 +101,11 @@ Snowman.prototype.changeState = function(state) {
         }
         this.body.velocity.x = v;
         this.body.drag.set(0);
+
+        game.add.tween(this.subSprite.scale)
+            .to({ y: 0.5 }, G.snowmanMovementTime, Phaser.Easing.Bounce.Out)
+            .yoyo(true)
+            .start();
     }
 
     if (state == this.WAITING) {

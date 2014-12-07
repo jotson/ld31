@@ -17,7 +17,7 @@ var G = {
     playerHealth: 5,
 
     snowmanSpeed: 500,
-    snowmanJump: 800,
+    snowmanJump: 1200,
     snowmanMaxSpeed: 300,
     snowmanDrag: 600,
     snowmanMovementTime: 150,
