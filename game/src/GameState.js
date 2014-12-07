@@ -32,7 +32,8 @@ GameState.prototype.create = function() {
 
     G.player = Player.create();
 
-    this.setupSnowmanShrapnel();
+    this.setupSnowBits();
+    this.setupSnowGibs();
 
     this.equipFlamethrower();
 
@@ -88,9 +89,11 @@ GameState.prototype.update = function() {
 
     // Turn off snowbits
     this.snowbits.on = false;
+    this.snowgibs.on = false;
 
     // Collisions
     game.physics.arcade.collide(this.snowbits, G.ground);
+    game.physics.arcade.collide(this.snowgibs, G.ground);
     game.physics.arcade.collide(G.player, G.ground);
     game.physics.arcade.collide(G.player, G.enemiesGroup, function(p, target) {
         if (p.body.touching.down && !p.body.touching.left && !p.body.touching.right) {
@@ -322,7 +325,7 @@ GameState.prototype.equipFlamethrower = function() {
     this.flameThrower.on = false;
 };
 
-GameState.prototype.setupSnowmanShrapnel = function() {
+GameState.prototype.setupSnowBits = function() {
     this.snowbits = game.add.emitter(0, 0, 1000);
     this.snowbits.makeParticles( 'sprites', 'snowball.png' );
     this.snowbits.gravity = G.gravity;
@@ -336,4 +339,26 @@ GameState.prototype.setupSnowmanShrapnel = function() {
     this.snowbits.setAll('body.mass', 1);
     this.snowbits.start(false, 30000, 1);
     this.snowbits.on = false;
+};
+
+GameState.prototype.setupSnowGibs = function() {
+    this.snowgibs = game.add.emitter(0, 0, 1000);
+    this.snowgibs.makeParticles( 'sprites', [ 'snowbits1.png', 'snowbits1.png', 'snowbits1.png', 'snowbits2.png', 'snowbits2.png', 'snowbits3.png' ] );
+    this.snowgibs.gravity = G.gravity;
+    this.snowgibs.minParticleScale = 1;
+    this.snowgibs.maxParticleScale = 1;
+    this.snowgibs.particleDrag = new Phaser.Point(200, 0);
+    this.snowgibs.angularDrag = 200;
+    this.snowgibs.setXSpeed(-300, 300);
+    this.snowgibs.setYSpeed(-500, -2000);
+    this.snowgibs.area = new Phaser.Rectangle(0, 0, 20, 60);
+    this.snowgibs.setAll('body.mass', 1);
+    this.snowgibs.start(false, 30000, 1);
+    this.snowgibs.on = false;
+};
+
+GameState.prototype.emitGibs = function(x, y) {
+    this.snowgibs.x = x;
+    this.snowgibs.y = y;
+    this.snowgibs.on = true;
 };

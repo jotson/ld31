@@ -22,6 +22,8 @@ var Snowman = function(x, y) {
         G.score += G.snowmanScore;
         this.subSprite.kill();
         this.healthbar.kill();
+        var state = game.state.getCurrentState();
+        if (state.emitGibs !== undefined) state.emitGibs(this.x, this.y);
     }, this);
 
     // Health bar
