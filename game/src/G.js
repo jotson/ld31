@@ -28,6 +28,9 @@ var G = {
     snowmanHealth: 60,
     snowmanInterval: 2000, /* millis */
 
+    bossHealth: 500,
+    bossTimeThreshold: 30000, /* millis */
+
     fuel: 0,
     fuelDisplay: 0,
     fuelValue: 50, /* units */

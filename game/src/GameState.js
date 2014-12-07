@@ -65,7 +65,7 @@ GameState.prototype.resetGame = function() {
                 break;
             }
         }
-        if (!bossExists && game.math.chanceRoll(10)) {
+        if (!bossExists && game.math.chanceRoll(10) && G.gameTimer > G.bossTimeThreshold) {
             Boss.create();
         } else {
             Snowman.create();

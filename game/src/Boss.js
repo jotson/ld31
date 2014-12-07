@@ -31,7 +31,7 @@ Boss.create = function() {
     }
     s.revive();
 
-    s.health = G.snowmanHealth * 10;
+    s.health = G.bossHealth;
     s.maxHealth = s.health;
 
     s.firstMove = true;
