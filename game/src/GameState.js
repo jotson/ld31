@@ -25,10 +25,8 @@ GameState.prototype.create = function() {
     this.buildWorld();
 
     G.enemiesGroup = game.add.group();
-    Snowman.create();
 
     G.fuelGroup = game.add.group();
-    Fuel.create();
 
     G.player = Player.create();
 
@@ -42,7 +40,19 @@ GameState.prototype.create = function() {
     }
 };
 
+GameState.prototype.resetGame = function() {
+    G.fuel = G.fuelStart;
+
+    G.gameTimer = 0; /* millis */
+
+    this.fuelTimer = game.time.create(false);
+    this.fuelTimer.loop(G.fuelInterval, function() { Fuel.create(); }, this);
+    this.fuelTimer.start();
+};
+
 GameState.prototype.update = function() {
+    G.gameTimer += game.time.physicsElapsedMS;
+
     // Collisions
     game.physics.arcade.collide(G.player, G.ground);
     game.physics.arcade.collide(G.player, G.enemiesGroup, function(p, e) {
@@ -65,7 +75,6 @@ GameState.prototype.update = function() {
         if (f.state !== f.COLLECTED && game.physics.arcade.distanceBetween(G.player, f) < f.width * 2) {
             f.changeState(f.COLLECTED);
             G.fuel += G.fuelValue;
-            Fuel.create();
         }
     }, this);
 
@@ -140,10 +149,6 @@ GameState.prototype.processPlayerInput = function() {
             G.fuel = 0;
         }
     }
-};
-
-GameState.prototype.resetGame = function() {
-    G.fuel = G.fuelStart;
 };
 
 GameState.prototype.addUI = function() {

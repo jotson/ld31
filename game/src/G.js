@@ -37,6 +37,8 @@ var G = {
     fuelBounce: 0.8,
     fuelMaxSpeed: 50,
     fuelHealth: 1,
+    fuelInterval: 5000, /* millis */
+    fuelFallingSpeed: 100,
 
     flameSpeed: 1000,
     flameJitter: 100,

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r2">
+    <folder id="0">
+        <file id="0" name="fuel_barrel.png" width="640" height="640" pivot_x="0.486598" pivot_y="0.498969"/>
+        <file id="1" name="fuel_parachute.png" width="640" height="640" pivot_x="0.440625" pivot_y="0.082812"/>
+    </folder>
+    <entity id="0" name="fuel">
+        <obj_info name="bone_000" type="bone" w="426.519" h="10"/>
+        <obj_info name="bone_001" type="bone" w="334.221" h="10"/>
+        <obj_info name="bone_002" type="bone" w="372.5" h="10"/>
+        <obj_info name="bone_003" type="bone" w="387.5" h="10"/>
+        <animation id="0" name="falling" length="2000" interval="100">
+            <mainline>
+                <key id="0">
+                    <bone_ref id="0" timeline="2" key="0"/>
+                    <bone_ref id="1" parent="0" timeline="3" key="0"/>
+                    <object_ref id="0" parent="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" parent="1" timeline="0" key="0" z_index="1"/>
+                </key>
+                <key id="1" time="483">
+                    <bone_ref id="0" timeline="2" key="1"/>
+                    <bone_ref id="1" parent="0" timeline="3" key="1"/>
+                    <object_ref id="0" parent="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" parent="1" timeline="0" key="0" z_index="1"/>
+                </key>
+                <key id="2" time="642">
+                    <bone_ref id="0" timeline="2" key="1"/>
+                    <bone_ref id="1" parent="0" timeline="3" key="2"/>
+                    <object_ref id="0" parent="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" parent="1" timeline="0" key="0" z_index="1"/>
+                </key>
+                <key id="3" time="1181">
+                    <bone_ref id="0" timeline="2" key="2"/>
+                    <bone_ref id="1" parent="0" timeline="3" key="3"/>
+                    <object_ref id="0" parent="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" parent="1" timeline="0" key="0" z_index="1"/>
+                </key>
+                <key id="4" time="1349">
+                    <bone_ref id="0" timeline="2" key="2"/>
+                    <bone_ref id="1" parent="0" timeline="3" key="4"/>
+                    <object_ref id="0" parent="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" parent="1" timeline="0" key="0" z_index="1"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="fuel_barrel">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="190.055556" y="-14.812864" angle="90.000001"/>
+                </key>
+            </timeline>
+            <timeline id="1" name="fuel_parachute">
+                <key id="0" spin="0">
+                    <object folder="0" file="1" x="537.923976" y="-33.260234" angle="90"/>
+                </key>
+            </timeline>
+            <timeline id="2" obj="2" name="bone_002" object_type="bone">
+                <key id="0" spin="-1">
+                    <bone x="12.5" y="835" angle="270"/>
+                </key>
+                <key id="1" time="483" curve_type="cubic" c1="0" c2="1">
+                    <bone x="12.5" y="835" angle="254.392681"/>
+                </key>
+                <key id="2" time="1181" curve_type="cubic" c1="0" c2="1" spin="-1">
+                    <bone x="12.5" y="835" angle="283.412358"/>
+                </key>
+            </timeline>
+            <timeline id="3" obj="3" name="bone_003" object_type="bone">
+                <key id="0" spin="-1">
+                    <bone x="417.5" y="-2.5"/>
+                </key>
+                <key id="1" time="483" spin="-1">
+                    <bone x="417.5" y="-2.5" angle="356.790687"/>
+                </key>
+                <key id="2" time="642">
+                    <bone x="417.5" y="-2.5" angle="339.506316"/>
+                </key>
+                <key id="3" time="1181">
+                    <bone x="417.5" y="-2.5" angle="354.983093"/>
+                </key>
+                <key id="4" time="1349" spin="-1">
+                    <bone x="417.5" y="-2.5" angle="15.333097"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="1" name="idle" length="1" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="fuel_barrel_000">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="-10" y="226.666667"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>
