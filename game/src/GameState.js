@@ -31,6 +31,10 @@ GameState.prototype.create = function() {
 
     this.equipFlamethrower();
 
+    G.showTutorial('survive', 'Kill all snowmen!');
+    G.showTutorial('move', 'Use ARROWS to move');
+    G.showTutorial('shoot', 'SPACEBAR for flamethrower');
+
     this.addUI();
 
     if (G.devMode) {
@@ -82,6 +86,8 @@ GameState.prototype.update = function() {
 
         this.fuelTimer.stop();
         this.enemyTimer.stop();
+
+        this.flameThrower.on = false;
 
         var t = game.add.text(0, 0, 'GAME OVER', { font: '48px ' + G.mainFont, fill: '#ffffff' });
         t.x = game.width/2 - t.getBounds().width/2;
@@ -176,7 +182,7 @@ GameState.prototype.processPlayerInput = function() {
 GameState.prototype.addUI = function() {
     G.ui = game.add.group();
 
-    G.ui.fuelText = game.add.text(10, 5, "", { font: '36px ' + G.mainFont, fill: '#ffffff' });
+    G.ui.fuelText = game.add.text(10, 5, "", { font: '36px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 5 });
 };
 
 GameState.prototype.updateUI = function() {

@@ -90,7 +90,10 @@ G.fadeOut = function(length, color, delay) {
 };
 
 G.showTutorial = function(flag, message) {
-    if (G.tutorial[flag] === undefined && G.message.getQueueLength() === 0) {
+    if (G.message === null || G.message === undefined) {
+        G.message = new Message();
+    }
+    if (G.tutorial[flag] === undefined) {
         G.tutorial[flag] = true;
         G.message.add(message);
     }

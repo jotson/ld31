@@ -1,41 +1,37 @@
-var Message = function(game, parent) {
-    game = game;
-    this.parent = parent;
+var Message = function() {
     this.messages = [];
-
-    this.messageTimer = 0;
 };
 
 Message.prototype.add = function(message) {
     this.messages.push(message);
+
+    if (this.timer === undefined) this.update();
 };
 
 Message.prototype.update = function() {
-    this.messageTimer -= game.time.elapsed;
-
     if (this.messages.length === 0) return;
 
-    if (this.messageTimer <= 0) {
-        var m = this.messages.shift();
+    var m = this.messages.shift();
 
-        var t = m.length * 80;
-        if (t < 1000) t = 1500;
+    // Timer
+    var t = m.length * 80;
+    if (t < 1000) t = 1500;
+    this.timer = game.time.create(true);
+    this.timer.add(t + 1000, this.update, this);
+    this.timer.start();
 
-        var text = game.add.text(10, -250, m, { font: '36px ' + G.mainFont, fill: '#ffffff' });
-        text.fixedToCamera = true;
-        text.updateTransform();
-        text.cameraOffset.x = game.width/2 - text.getBounds().width/2;
+    var text = game.add.text(10, -500, m, { font: '64px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 10 });
+    text.fixedToCamera = true;
+    text.updateTransform();
+    text.cameraOffset.x = game.width/2 - text.getBounds().width/2;
 
-        // Tween
-        game.add.tween(text).to({ alpha: 0.3 }, 250, Phaser.Easing.Cubic.In, true, t+350);
-        var tween = game.add.tween(text.cameraOffset)
-            .to({ y: 10 }, 250, Phaser.Easing.Elastic.Out, false, 100)
-            .to({ y: game.camera.height }, 250, Phaser.Easing.Cubic.In, false, t);
-        tween._lastChild.onComplete.add(function() { this.destroy(); }, text);
-        tween.start();
-
-        this.messageTimer = t + 300;
-    }
+    // Tween
+    game.add.tween(text).to({ alpha: 0 }, 500, Phaser.Easing.Cubic.In, true, t + 500);
+    var tween = game.add.tween(text.cameraOffset)
+        .to({ y: 100 }, 500, Phaser.Easing.Elastic.Out, false, 100)
+        .to({ y: game.camera.height * 2 }, 500, Phaser.Easing.Cubic.In, false, t);
+    tween.onComplete.add(function() { this.destroy(); }, text);
+    tween.start();
 };
 
 Message.prototype.getQueueLength = function() {
