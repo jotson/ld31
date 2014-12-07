@@ -36,6 +36,10 @@ var Snowman = function(x, y) {
     anim.onComplete.add(function(sprite, animation) {
         this.animations.play('idle');
     }, this);
+    anim = this.animations.add('attack', Phaser.Animation.generateFrameNames('snowman-attack__', 0, 4, '.png', 3), 20);
+    anim.onComplete.add(function(sprite, animation) {
+        this.animations.play('idle');
+    }, this);
 
     this.animations.play('idle');
     
@@ -124,6 +128,7 @@ Snowman.prototype.changeState = function(state) {
     }
 
     if (state == this.ATTACK) {
+        this.animations.play('attack');
         this.myNextState = this.WAITING;
         this.myStateTime = G.snowmanAttackTime;
     }
