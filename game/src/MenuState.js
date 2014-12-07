@@ -5,7 +5,7 @@ var MenuState = function(game) {
 MenuState.prototype.create = function() {
     G.setupStage();
 
-    var t = game.add.text(0, 0, 'CLICK TO START', { font: '64px ' + G.mainFont, fill: '#ffffff' });
+    var t = game.add.text(0, 0, 'CLICK TO START', { font: '64px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 10 });
     t.x = game.width/2 - t.getBounds().width/2;
     t.y = game.height * 0.3;
 

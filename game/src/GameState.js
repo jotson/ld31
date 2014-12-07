@@ -105,10 +105,14 @@ GameState.prototype.update = function() {
 
         this.flameThrower.on = false;
 
-        var t = game.add.text(0, 0, 'GAME OVER', { font: '48px ' + G.mainFont, fill: '#ffffff' });
+        var t = game.add.text(0, 0, 'GAME OVER', { font: '48px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 10 });
         t.x = game.width/2 - t.getBounds().width/2;
         t.y = game.height * 0.3;
+        game.add.tween(t).to({ y: t.y + 10 }, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.POSITIVE_INFINITY, true);
 
+        var t = game.add.text(0, 0, 'CLICK TO RESTART', { font: '48px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 10 });
+        t.x = game.width/2 - t.getBounds().width/2;
+        t.y = game.height * 0.5;
         game.add.tween(t).to({ y: t.y + 10 }, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.POSITIVE_INFINITY, true);
 
         game.input.onDown.add(function() { game.state.start('menu'); }, this);
