@@ -63,8 +63,8 @@ GameState.prototype.update = function() {
     game.physics.arcade.collide(G.enemiesGroup, G.ground);
     game.physics.arcade.collide(G.enemiesGroup, G.fuelGroup);
     game.physics.arcade.collide(G.fuelGroup, G.ground);
-    game.physics.arcade.collide(this.flameThrower, G.enemiesGroup, function(flame, snowman) {
-        snowman.damage(1);
+    game.physics.arcade.collide(this.flameThrower, [ G.enemiesGroup, G.fuelGroup ], function(flame, target) {
+        target.damage(1);
     });
 
     // Input

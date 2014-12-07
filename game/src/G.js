@@ -36,7 +36,7 @@ var G = {
     fuelDrag: 300,
     fuelBounce: 0.8,
     fuelMaxSpeed: 50,
-    fuelHealth: 1,
+    fuelHealth: 2,
     fuelInterval: 5000, /* millis */
     fuelFallingSpeed: 100,
 
