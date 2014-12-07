@@ -17,6 +17,9 @@ var Player = function(x, y) {
     this.alpha = 0;
     this.subSprite = game.add.sprite(x, y, 'sprites', '');
     this.subSprite.anchor.setTo(0.5, 1);
+    this.events.onKilled.add(function() {
+        this.subSprite.kill();
+    }, this);
 
     // Use the child animation manager for this sprite
     this.animations = this.subSprite.animations;
