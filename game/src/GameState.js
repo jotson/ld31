@@ -24,7 +24,8 @@ GameState.prototype.create = function() {
     this.buildWorld();
 
     G.makeClouds();
-    
+    G.makeSnow();
+
     G.enemiesGroup = game.add.group();
 
     G.fuelGroup = game.add.group();

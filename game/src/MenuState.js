@@ -8,6 +8,7 @@ MenuState.prototype.create = function() {
     var t;
 
     G.makeClouds();
+    G.makeSnow();
 
     t = game.add.text(0, 0, 'FLAMETHROWERS\nVS. SNOWMEN!', { font: '96px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 10, align: 'center' });
     t.x = game.width/2 - t.getBounds().width/2;

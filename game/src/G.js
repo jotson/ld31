@@ -142,3 +142,17 @@ G.makeClouds = function() {
         }, cloud);
     }
 };
+
+G.makeSnow = function() {
+    var snowLife = 6000;
+
+    var snow = game.add.emitter(game.width/2, 0, 500);
+    snow.gravity = 100;
+    snow.area = new Phaser.Rectangle(0, 0, game.width, 0);
+    snow.makeParticles( 'sprites', 'snowflake.png' );
+    snow.minParticleScale = 0.2;
+    snow.maxParticleScale = 0.2;
+    snow.alpha = 0.5;
+    snow.setAll('body.maxVelocity', new Phaser.Point(Number.POSITIVE_INFINITY, 100));
+    snow.start(false, snowLife, 100);
+};
