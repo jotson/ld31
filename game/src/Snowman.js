@@ -6,7 +6,6 @@ var Snowman = function(x, y) {
     this.anchor.setTo(0.5, 0.5);
     this.checkWorldBounds = true;
     this.outOfBoundsKill = true;
-    this.health = G.snowmanHealth;
 
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.mass = G.snowmanMass;
@@ -16,9 +15,10 @@ var Snowman = function(x, y) {
     this.body.bounce.set(G.snowmanBounce, G.snowmanBounce * 0.3);
 
     // Use a child sprite without physics to draw the actual animations
-    this.alpha = 0;
+    this.alpha = 1;
     this.subSprite = game.add.sprite(x, y, 'sprites', '');
     this.subSprite.anchor.setTo(0.5, 1);
+    this.addChild(this.subSprite);
 
     // Use the child animation manager for this sprite
     this.animations = this.subSprite.animations;
@@ -45,8 +45,8 @@ Snowman.prototype.update = function() {
 
     // Align the bottom edge of the child sprite
     // to the bottom edge of the parent.
-    this.subSprite.x = this.x;
-    this.subSprite.y = this.y + this.height / 2;
+    this.subSprite.x = 0;
+    this.subSprite.y = this.height / 2;
 
     if (this.myDirection = Phaser.RIGHT) {
         this.subSprite.scale.x = -1;
@@ -128,6 +128,7 @@ Snowman.create = function() {
         s.myDirection = Phaser.RIGHT;
     }
     s.revive();
+    s.health = G.snowmanHealth;
     s.firstMove = true;
     s.animations.play('default');
     s.changeState(s.WAITING);

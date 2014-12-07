@@ -25,7 +25,7 @@ var G = {
     snowmanAttackTime: 1000,
     snowmanMass: 10,
     snowmanBounce: 0.8,
-    snowmanHealth: 10,
+    snowmanHealth: 20,
 
     fuel: 0,
     fuelDisplay: 0,
@@ -37,6 +37,10 @@ var G = {
     fuelBounce: 0.8,
     fuelMaxSpeed: 50,
     fuelHealth: 1,
+
+    flameSpeed: 1000,
+    flameJitter: 100,
+    flameLifetime: 250,
 
     groundSize: 64,
 

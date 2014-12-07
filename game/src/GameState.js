@@ -53,6 +53,9 @@ GameState.prototype.update = function() {
     game.physics.arcade.collide(G.enemiesGroup, G.ground);
     game.physics.arcade.collide(G.enemiesGroup, G.fuelGroup);
     game.physics.arcade.collide(G.fuelGroup, G.ground);
+    game.physics.arcade.collide(this.flameThrower, G.enemiesGroup, function(flame, snowman) {
+        snowman.damage(1);
+    });
 
     // Input
     this.processPlayerInput();
@@ -104,18 +107,36 @@ GameState.prototype.processPlayerInput = function() {
     }
 
     // Flamethrower
+    this.flameThrower.on = false;
     if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+        if (G.player.myState == G.player.MOVING) {
+            this.flameThrower.y = G.player.y - 30;
+        } else {
+            this.flameThrower.y = G.player.y - 50;
+        }
+
+        if (G.player.myDirection === Phaser.RIGHT) {
+            this.flameThrower.x = G.player.x + 80;
+            this.flameThrower.minParticleSpeed.set(G.flameSpeed * 0.8 + G.player.body.velocity.x, -G.flameJitter);
+            this.flameThrower.maxParticleSpeed.set(G.flameSpeed + G.player.body.velocity.x, G.flameJitter);
+        } else {
+            this.flameThrower.x = G.player.x - 80;
+            this.flameThrower.minParticleSpeed.set(-G.flameSpeed * 0.8 + G.player.body.velocity.x, -G.flameJitter);
+            this.flameThrower.maxParticleSpeed.set(-G.flameSpeed + G.player.body.velocity.x, G.flameJitter);
+        }
+
         if (G.fuel > 0) {
             G.fuel -= game.time.physicsElapsed * G.fuelBurnRate;
+            this.flameThrower.on = true;
         }
+        
         if (G.fuel > 50) {
-            // Normal animation
+            this.flameThrower.frequency = 1;
+        } else {
+            this.flameThrower.frequency = (100 - G.fuel);
         }
-        if (G.fuel > 25) {
-            // Low animation
-        }
+
         if (G.fuel <= 0) {
-            // Empty animation
             G.fuel = 0;
         }
     }
@@ -191,8 +212,12 @@ GameState.prototype.buildWorld = function() {
 
 GameState.prototype.equipFlamethrower = function() {
     this.flameThrower = game.add.emitter(0, 0, 400);
-    this.flameThrower.makeParticles( [ 'sprites', 'fire.png', 'smoke.png' ] );
-    this.flameThrower.setAlpha(1, 0, 3000);
-    this.flameThrower.setScale(0.2, 2, 0.2, 2, 3000);
-    this.flameThrower.start(false, 3000, 5);
+    this.flameThrower.makeParticles( 'sprites', [ 'fire.png', 'fire.png', 'smoke.png', 'smoke.png', 'smoke.png' ] );
+    this.flameThrower.gravity = -G.gravity;
+    this.flameThrower.setAlpha(1, 0.2, G.flameLifetime);
+    this.flameThrower.setScale(0.2, 2, 0.2, 2, G.flameLifetime * 2);
+    this.flameThrower.area = new Phaser.Rectangle(0, -10, 1, 20);
+    this.flameThrower.setAll('body.mass', 0);
+    this.flameThrower.start(false, G.flameLifetime, 1);
+    this.flameThrower.on = false;
 };

@@ -26,10 +26,11 @@ var Player = function(x, y) {
     this.animations.add('run', Phaser.Animation.generateFrameNames('player-run__', 0, 9, '.png', 3), 20, true);
 
     this.animations.play('idle');
+
+    this.myDirection = Phaser.RIGHT;
     
     this.IDLE = 1;
     this.MOVING = 2;
-    this.ATTACK = 3;
 };
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -45,26 +46,25 @@ Player.prototype.update = function() {
 
     if (this.body.velocity.x < 0) {
         G.player.subSprite.scale.x = -1;
+        this.myDirection = Phaser.LEFT;
     }
     if (this.body.velocity.x > 0) {
         G.player.subSprite.scale.x = 1;
+        this.myDirection = Phaser.RIGHT;
     }
 
     if (this.body.velocity.x !== 0) {
         this.animations.play('run');
+        this.changeState(this.MOVING);
     } else {
         this.animations.play('idle');
+        this.changeState(this.IDLE);
     }
-
-    // this.myStateElapsed += game.time.physicsElapsedMS;
-
-    // if (this.myStateElapsed > this.myStateTime) {
-    //     this.changeState(this.myNextState);
-    // }
 };
 
-// Player.prototype.changeState = function(state) {
-// };
+Player.prototype.changeState = function(state) {
+    this.myState = state;
+};
 
 Player.create = function() {
     var s = new Player(game.width/2, 200);
