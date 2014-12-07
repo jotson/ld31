@@ -20,7 +20,12 @@ var Snowman = function(x, y) {
     this.subSprite.anchor.setTo(0.5, 1);
     this.events.onKilled.add(function() {
         this.subSprite.kill();
+        this.healthbar.kill();
     }, this);
+
+    // Health bar
+    this.healthbar = game.add.sprite(0, 0, 'sprites', 'healthbar.png');
+    this.healthbar.anchor.set(0.5, 0.5);
 
     // Use the child animation manager for this sprite
     this.animations = this.subSprite.animations;
@@ -50,6 +55,11 @@ Snowman.prototype.update = function() {
     this.subSprite.x = this.x;
     this.subSprite.y = this.y + this.height / 2;
 
+    this.healthbar.x = this.x;
+    this.healthbar.y = this.y - this.subSprite.height * 0.8;
+    this.healthbar.width = (this.health / G.snowmanHealth) * this.healthbar.texture.frame.width;
+    if (this.alive && this.healthbar.width < 10) this.healthbar.width = 10;
+
     if (this.myDirection === Phaser.RIGHT) {
         this.subSprite.scale.x = -1;
     } else {
@@ -63,7 +73,7 @@ Snowman.prototype.update = function() {
     }
 
     // Hit player
-    if (this.myState == this.MOVING && game.physics.arcade.distanceBetween(G.player, this) < G.player.width * 2) {
+    if (this.myState == this.MOVING && game.physics.arcade.distanceBetween(G.player, this) < G.player.width * 4) {
         this.changeState(this.ATTACK);
         G.player.damage(1);
     }
@@ -139,8 +149,18 @@ Snowman.create = function() {
         s.y = 50;
     }
     s.revive();
+
+    // It ain't pretty but it works
+    s.subSprite.x = -1000;
+    s.subSprite.y = -1000;
     s.subSprite.revive();
+
+    s.healthbar.x = -1000;
+    s.healthbar.y = -1000;
+    s.healthbar.revive();
+
     s.health = G.snowmanHealth;
+
     s.firstMove = true;
     s.animations.play('default');
     s.changeState(s.WAITING);

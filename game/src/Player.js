@@ -21,6 +21,10 @@ var Player = function(x, y) {
         this.subSprite.kill();
     }, this);
 
+    // Health bar
+    this.healthbar = game.add.sprite(0, 0, 'sprites', 'healthbar.png');
+    this.healthbar.anchor.set(0.5, 0.5);
+
     // Use the child animation manager for this sprite
     this.animations = this.subSprite.animations;
 
@@ -46,6 +50,17 @@ Player.prototype.update = function() {
     // to the bottom edge of the parent.
     this.subSprite.x = this.x;
     this.subSprite.y = this.y + this.height / 2;
+
+    this.healthbar.x = this.x;
+    this.healthbar.y = this.y - this.subSprite.height;
+    this.healthbar.width = (this.health / G.playerHealth) * this.healthbar.texture.frame.width;
+    if (this.alive && this.healthbar.width < 10) this.healthbar.width = 10;
+    if (this.health < G.playerHealth / 2 && !game.tweens.isTweening(this.healthbar)) {
+        game.add.tween(this.healthbar)
+            .to( { alpha: 0 }, 250, Phaser.Easing.Cubic.InOut)
+            .loop()
+            .start();
+    }
 
     if (this.body.velocity.x < 0) {
         G.player.subSprite.scale.x = -1;

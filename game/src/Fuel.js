@@ -86,6 +86,8 @@ Fuel.create = function() {
     s.reset(0, 0);
     s.x = game.rnd.between(game.camera.x, game.camera.x + game.camera.width);
     s.revive();
+    s.subSprite.x = -1000;
+    s.subSprite.y = -1000;
     s.subSprite.revive();
     s.firstMove = true;
     s.animations.play('default');
