@@ -1,8 +1,8 @@
 var Snowman = function(x, y) {
-    Phaser.Sprite.call(this, game, x, y, 'sprites', 'snowman-00.png');
+    Phaser.Sprite.call(this, game, x, y, 'sprites', '');
 
-    this.width = 48;
-    this.height = 48;
+    this.width = 64;
+    this.height = 64;
     this.anchor.setTo(0.5, 0.5);
     this.checkWorldBounds = true;
     this.outOfBoundsKill = true;
@@ -12,10 +12,25 @@ var Snowman = function(x, y) {
     this.body.mass = G.snowmanMass;
     this.body.maxVelocity.setTo(G.snowmanMaxSpeed, Number.POSITIVE_INFINITY);
     this.body.collideWorldBounds = false;
+    this.body.checkCollision.up = true;
     this.body.bounce.set(G.snowmanBounce, G.snowmanBounce * 0.3);
 
-    // this.animations.add('default', [0,1,2], 10, true);
-    // this.animations.play('default');
+    // Use a child sprite without physics to draw the actual animations
+    this.alpha = 0;
+    this.subSprite = game.add.sprite(x, y, 'sprites', '');
+    this.subSprite.anchor.setTo(0.5, 1);
+
+    // Use the child animation manager for this sprite
+    this.animations = this.subSprite.animations;
+
+    var anim;
+    this.animations.add('idle', Phaser.Animation.generateFrameNames('snowman-idle__', 0, 9, '.png', 3), 10, true);
+    anim = this.animations.add('jump', Phaser.Animation.generateFrameNames('snowman-jump__', 0, 9, '.png', 3), 20);
+    anim.onComplete.add(function(sprite, animation) {
+        this.animations.play('idle');
+    }, this);
+
+    this.animations.play('idle');
     
     this.MOVING = 1;
     this.WAITING = 2;
@@ -27,6 +42,17 @@ Snowman.prototype.constructor = Snowman;
 
 Snowman.prototype.update = function() {
     if (!this.alive) return;
+
+    // Align the bottom edge of the child sprite
+    // to the bottom edge of the parent.
+    this.subSprite.x = this.x;
+    this.subSprite.y = this.y + this.height / 2;
+
+    if (this.myDirection = Phaser.RIGHT) {
+        this.subSprite.scale.x = -1;
+    } else {
+        this.subSprite.scale.y = 1;
+    }
 
     this.myStateElapsed += game.time.physicsElapsedMS;
 
@@ -59,6 +85,8 @@ Snowman.prototype.changeState = function(state) {
     this.body.drag.setTo(G.snowmanDrag, 0);
 
     if (state == this.MOVING) {
+        this.animations.play('jump');
+
         this.myNextState = this.WAITING;
         this.myStateTime = G.snowmanMovementTime;
 

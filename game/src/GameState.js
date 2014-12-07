@@ -20,24 +20,25 @@ GameState.prototype.create = function() {
     // Adjustment for physics tunneling
     game.physics.arcade.OVERLAP_BIAS = G.groundSize * 0.75;
 
-    G.enemiesGroup = game.add.group();
-    G.fuelGroup = game.add.group();
-
     this.resetGame();
 
     this.buildWorld();
 
-    this.addPlayer();
-
+    G.enemiesGroup = game.add.group();
     Snowman.create();
 
+    G.fuelGroup = game.add.group();
     Fuel.create();
+
+    G.player = Player.create();
+
+    this.equipFlamethrower();
 
     this.addUI();
 
     if (G.devMode) {
-        this.fps = game.add.text(5, game.height - 24, '', { font: '14px ' + G.mainFont, fill: '#ffffff' });
-        game.add.text(65, game.height - 24, '** DEVELOPMENT ­— DEVELOPMENT — DEVELOPMENT — DEVELOPMENT — DEVELOPMENT **', { font: '14px ' + G.mainFont, fill: '#ffffff' });
+        this.fps = game.add.text(5, game.height - 50, '', { font: '28px ' + G.mainFont, fill: '#ffffff' });
+        game.add.text(120, game.height - 50, '** DEVELOPMENT ­— DEVELOPMENT — DEVELOPMENT — DEVELOPMENT — DEVELOPMENT **', { font: '28px ' + G.mainFont, fill: '#ffffff' });
     }
 };
 
@@ -59,7 +60,6 @@ GameState.prototype.update = function() {
     // Player collecting fuel
     G.fuelGroup.forEachAlive(function(f) {
         if (f.state !== f.COLLECTED && game.physics.arcade.distanceBetween(G.player, f) < f.width * 2) {
-            console.log('got fuel!');
             f.changeState(f.COLLECTED);
             G.fuel += G.fuelValue;
             Fuel.create();
@@ -128,7 +128,7 @@ GameState.prototype.resetGame = function() {
 GameState.prototype.addUI = function() {
     G.ui = game.add.group();
 
-    G.ui.fuelText = game.add.text(5, 5, "", { font: '14px ' + G.mainFont, fill: '#ffffff' });
+    G.ui.fuelText = game.add.text(10, 5, "", { font: '36px ' + G.mainFont, fill: '#ffffff' });
 };
 
 GameState.prototype.updateUI = function() {
@@ -143,20 +143,6 @@ GameState.prototype.updateUI = function() {
     G.ui.fuelText.setText("FUEL: " + Math.ceil(G.fuelDisplay));
 };
 
-GameState.prototype.addPlayer = function() {
-    G.player = game.add.sprite(game.width/2, 50, 'sprites', 'player-00.png');
-    G.player.width = 48;
-    G.player.height = 48;
-    G.player.health = G.playerHealth;
-    G.player.anchor.setTo(0.5, 0.5);
-    game.physics.enable(G.player, Phaser.Physics.ARCADE);
-    G.player.body.collideWorldBounds = true;
-    G.player.body.checkCollision.up = false;
-    G.player.body.mass = G.playerMass;
-    G.player.body.bounce.set(G.playerBounce, 0);
-    G.player.body.maxVelocity.setTo(G.playerMaxSpeed, Number.POSITIVE_INFINITY);
-};
-
 GameState.prototype.buildWorld = function() {
     // Set world boundary slightly larger than the camera area to allow enemies to be
     // created off camera without falling out of the world and to allow the player to
@@ -169,10 +155,10 @@ GameState.prototype.buildWorld = function() {
         '........................',
         '........................',
         '........................',
+        '........................',
+        '........................',
         '#######..........#######',
         '........................',
-        '........................',
-        '..........####..........',
         '........................',
         '........................',
         '........................',
@@ -187,7 +173,9 @@ GameState.prototype.buildWorld = function() {
                 x = j * G.groundSize - xOffset;
                 y = i * G.groundSize + game.height % G.groundSize;
 
-                var g = game.add.sprite(x, y, 'sprites', 'ground-00.png');
+                var g = game.add.sprite(x, y, 'sprites', 'ground.png');
+                g.width = G.groundSize;
+                g.height = G.groundSize;
                 game.physics.enable(g, Phaser.Physics.ARCADE);
                 g.body.allowGravity = false;
                 g.body.mass = 100;
@@ -199,4 +187,12 @@ GameState.prototype.buildWorld = function() {
             }
         }
     }
+};
+
+GameState.prototype.equipFlamethrower = function() {
+    this.flameThrower = game.add.emitter(0, 0, 400);
+    this.flameThrower.makeParticles( [ 'sprites', 'fire.png', 'smoke.png' ] );
+    this.flameThrower.setAlpha(1, 0, 3000);
+    this.flameThrower.setScale(0.2, 2, 0.2, 2, 3000);
+    this.flameThrower.start(false, 3000, 5);
 };

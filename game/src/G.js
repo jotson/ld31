@@ -2,24 +2,24 @@ var G = {
     devMode: true,
 
     game: null,
-    width: 640, /* stage width in pixels */
-    height: 360, /* stage height in pixels */
+    width: 1280, /* stage width in pixels */
+    height: 720, /* stage height in pixels */
 
-    gravity: 2400,
+    gravity: 4800,
 
-    playerAcceleration: 1500,
-    playerJumpSpeed: -500,
+    playerAcceleration: 3000,
+    playerJumpSpeed: -1200,
     playerJumpDuration: 200,
-    playerMaxSpeed: 500,
-    playerDrag: 1000,
+    playerMaxSpeed: 1000,
+    playerDrag: 2000,
     playerMass: 1,
     playerBounce: 0.3,
     playerHealth: 10,
 
-    snowmanSpeed: 250,
-    snowmanJump: 400,
-    snowmanMaxSpeed: 150,
-    snowmanDrag: 300,
+    snowmanSpeed: 500,
+    snowmanJump: 800,
+    snowmanMaxSpeed: 300,
+    snowmanDrag: 600,
     snowmanMovementTime: 150,
     snowmanWaitTime: 1750,
     snowmanAttackTime: 1000,
@@ -31,14 +31,14 @@ var G = {
     fuelDisplay: 0,
     fuelValue: 25, /* units */
     fuelStart: 100, /* units */
-    fuelBurnRate: 20, /* units per second */
+    fuelBurnRate: 50, /* units per second */
     fuelMass: 100,
     fuelDrag: 300,
     fuelBounce: 0.8,
     fuelMaxSpeed: 50,
     fuelHealth: 1,
 
-    groundSize: 32,
+    groundSize: 64,
 
     sfx: {}, /* sound effects */
 

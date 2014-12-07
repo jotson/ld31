@@ -1,5 +1,5 @@
 var Fuel = function(x, y) {
-    Phaser.Sprite.call(this, game, x, y, 'sprites', 'fuel-00.png');
+    Phaser.Sprite.call(this, game, x, y, 'sprites', 'fuel-idle__000.png');
 
     this.anchor.setTo(0.5, 0.5);
     this.checkWorldBounds = true;
