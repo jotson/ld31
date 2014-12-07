@@ -32,6 +32,10 @@ var Player = function(x, y) {
     var anim;
     this.animations.add('idle', Phaser.Animation.generateFrameNames('player-idle__', 0, 19, '.png', 3), 20, true);
     this.animations.add('run', Phaser.Animation.generateFrameNames('player-run__', 0, 9, '.png', 3), 20, true);
+    anim = this.animations.add('hurt', [ 'player-hurt__000.png' ], 3, false);
+    anim.onComplete.add(function(sprite, animation) {
+        this.animations.play('idle');
+    }, this);
 
     this.animations.play('idle');
 
@@ -43,6 +47,14 @@ var Player = function(x, y) {
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
+
+Player.prototype.damage = function(amount) {
+    if (!this.alive) return;
+
+    Phaser.Sprite.prototype.damage.call(this, amount);
+
+    if (this.alive) this.animations.play('hurt');
+};
 
 Player.prototype.update = function() {
     if (!this.alive) return;
@@ -73,11 +85,15 @@ Player.prototype.update = function() {
     }
 
     if (this.body.velocity.x !== 0) {
-        this.animations.play('run');
+        if (this.animations.currentAnim.name != 'hurt') {
+            this.animations.play('run');
+        }
         this.changeState(this.MOVING);
     } else {
-        this.animations.play('idle');
         this.changeState(this.IDLE);
+        if (this.animations.currentAnim.name != 'hurt') {
+            this.animations.play('idle');
+        }
     }
 };
 

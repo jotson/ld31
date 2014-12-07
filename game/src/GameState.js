@@ -105,6 +105,26 @@ GameState.prototype.update = function() {
 
         this.flameThrower.on = false;
 
+        var death = game.add.sprite(G.player.x, G.player.y, 'sprites', 'player-death__000.png');
+        var deathX = 200;
+        if (G.player.x > game.width/2) {
+            deathX = -deathX;
+        } else {
+            death.scale.x = -1;
+        }
+        death.anchor.set(0.5, 1);
+        game.add.tween(death)
+            .to({ x: G.player.x + deathX }, 1000, Phaser.Easing.Sinusoidal.Out)
+            .start();
+        game.add.tween(death)
+            .to({ y: G.player.y - 50 }, 500, Phaser.Easing.Sinusoidal.InOut)
+            .yoyo(true)
+            .start();
+        game.add.tween(death)
+            .to({ alpha: 0 }, 250, Phaser.Easing.Cubic.InOut)
+            .delay(500)
+            .start();
+
         var t = game.add.text(0, 0, 'GAME OVER', { font: '48px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 10 });
         t.x = game.width/2 - t.getBounds().width/2;
         t.y = game.height * 0.3;
