@@ -106,6 +106,14 @@ Snowman.prototype.changeState = function(state) {
         this.myNextState = this.WAITING;
         this.myStateTime = G.snowmanMovementTime;
 
+        if (G.player !== undefined && G.player.alive) {
+            if (G.player.x > this.x) {
+                this.myDirection = Phaser.RIGHT;
+            } else {
+                this.myDirection = Phaser.LEFT;
+            }
+        }
+
         this.body.velocity.y = -G.snowmanJump;
         var v;
         if (this.myDirection === Phaser.LEFT) {
