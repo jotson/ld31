@@ -10,6 +10,8 @@ Flamethrower has poor range when fuel is low.
 
 MELT. ALL. SNOWMEN.
 
+[Vote for my game!](http://ludumdare.com/compo/ludum-dare-31/?action=preview&uid=20128)
+
 [I'm @yafd on Twitter](http://twitter.com/yafd)
 
 # Build instructions
