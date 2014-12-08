@@ -8,8 +8,9 @@ module.exports = function(grunt) {
         banner: '//! Copyright © 2014 John Watson <john@watson-net.com> All rights reserved\n// Build date: <%= grunt.template.today("yyyy-mm-dd") %>\n'
       },
       build: {
-        src: 'game/src/*.js',
-        dest: 'build/game.min.js'
+        files: {
+          'build/game.min.js': [ "game/src/G.js", "game/src/BootState.js", "game/src/EndState.js", "game/src/GameState.js", "game/src/MenuState.js", "game/src/PreloadState.js", "game/src/ScreenshotState.js", "game/src/Message.js", "game/src/Snowman.js", "game/src/Fuel.js", "game/src/Player.js", "game/src/Boss.js" ]
+        }
       }
     },
 
