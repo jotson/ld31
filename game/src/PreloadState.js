@@ -32,13 +32,33 @@ PreloadState.prototype.preload = function() {
 
     // Load assets
     game.load.atlasJSONHash('sprites', 'assets/gfx/atlas/sprites.png', 'assets/gfx/atlas/sprites.json');
-    // game.load.image('guts', 'assets/gfx/guts.png');
-    // game.load.spritesheet('zombie', 'assets/gfx/zombie.png', 20, 20);
-    // game.load.audio('rifle1', ['assets/sfx/rifle1.ogg', 'assets/sfx/rifle1.mp3']);
+
+    // Sounds
+    game.load.audio('fuelget', ['assets/sfx/fuelget.ogg', 'assets/sfx/fuelget.mp3']);
+    game.load.audio('flame', ['assets/sfx/flame.ogg', 'assets/sfx/flame.mp3']);
+    game.load.audio('death', ['assets/sfx/death.ogg', 'assets/sfx/death.mp3']);
+    game.load.audio('hit', ['assets/sfx/hit.ogg', 'assets/sfx/hit.mp3']);
+    game.load.audio('snowhit', ['assets/sfx/snowhit.ogg', 'assets/sfx/snowhit.mp3']);
+    game.load.audio('flameout', ['assets/sfx/flameout.ogg', 'assets/sfx/flameout.mp3']);
+    game.load.audio('flamehit', ['assets/sfx/flamehit.ogg', 'assets/sfx/flamehit.mp3']);
+    game.load.audio('jumphit', ['assets/sfx/jumphit.ogg', 'assets/sfx/jumphit.mp3']);
+    game.load.audio('snowwalk', ['assets/sfx/snowwalk.ogg', 'assets/sfx/snowwalk.mp3']);
+    game.load.audio('walk', ['assets/sfx/walk.ogg', 'assets/sfx/walk.mp3']);
 };
 
 PreloadState.prototype.create = function() {
     // Setup sound effects
+    G.sfx.fuelget = game.add.sound('fuelget', 1, false);
+    G.sfx.flame = game.add.sound('flame', 1, true);
+    G.sfx.death = game.add.sound('death', 1, false);
+    G.sfx.hit = game.add.sound('hit', 1, false);
+    G.sfx.snowhit = game.add.sound('snowhit', 1, false);
+    G.sfx.flameout = game.add.sound('flameout', 1, false);
+    G.sfx.flamehit = game.add.sound('flamehit', 1, false);
+    G.sfx.jumphit = game.add.sound('jumphit', 1, false);
+    G.sfx.snowwalk = game.add.sound('snowwalk', 1, false);
+    G.sfx.walk = game.add.sound('walk', 1, false);
+
     // G.sfx.music = game.add.sound('music', 0.3, true);
     // G.sfx.music.play();
 

@@ -69,7 +69,7 @@ GameState.prototype.resetGame = function() {
     this.enemyTimer = game.time.create(false);
     this.enemyTimer.loop(G.snowmanInterval, function() {
         var bossExists = false;
-        for(var i = 0; i < G.enemiesGroup.children; i++) {
+        for(var i = 0; i < G.enemiesGroup.children.length; i++) {
             if (G.enemiesGroup.children[i] instanceof Boss) {
                 bossExists = true;
                 break;
@@ -100,6 +100,7 @@ GameState.prototype.update = function() {
             p.body.velocity.y = G.playerJumpSpeed;
             target.damage(G.snowmanHealth / 2);
             G.score += G.snowmanScore / 2;
+            G.sfx.jumphit.play();
         }
     }, null, this);
     game.physics.arcade.collide(G.enemiesGroup, G.ground);
@@ -111,6 +112,7 @@ GameState.prototype.update = function() {
         this.snowbits.x = target.x;
         this.snowbits.y = target.y;
         this.snowbits.on = true;
+        if (!G.sfx.flamehit.isPlaying) G.sfx.flamehit.play();
     }, null, this);
 
     if (this.gameOver) return;
@@ -125,6 +127,9 @@ GameState.prototype.update = function() {
         this.enemyTimer.stop();
 
         this.flameThrower.on = false;
+        if (G.sfx.flame.isPlaying) G.sfx.flame.stop();
+
+        G.sfx.death.play();
 
         var death = game.add.sprite(G.player.x, G.player.y, 'sprites', 'player-death__000.png');
         var deathX = 200;
@@ -135,15 +140,15 @@ GameState.prototype.update = function() {
         }
         death.anchor.set(0.5, 1);
         game.add.tween(death)
-            .to({ x: G.player.x + deathX }, 1000, Phaser.Easing.Sinusoidal.Out)
+            .to({ x: G.player.x + deathX }, 2000, Phaser.Easing.Sinusoidal.Out)
             .start();
         game.add.tween(death)
-            .to({ y: G.player.y - 50 }, 500, Phaser.Easing.Sinusoidal.InOut)
+            .to({ y: G.player.y - 50 }, 1000, Phaser.Easing.Sinusoidal.InOut)
             .yoyo(true)
             .start();
         game.add.tween(death)
-            .to({ alpha: 0 }, 250, Phaser.Easing.Cubic.InOut)
-            .delay(500)
+            .to({ alpha: 0 }, 500, Phaser.Easing.Cubic.InOut)
+            .delay(1500)
             .start();
 
         var t = game.add.text(0, 0, 'GAME OVER', { font: '48px ' + G.mainFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 10 });
@@ -233,7 +238,13 @@ GameState.prototype.processPlayerInput = function() {
         
         if (G.fuel <= 0) {
             G.fuel = 0;
+            if (!G.sfx.flameout.isPlaying) G.sfx.flameout.play();
         }
+    }
+    if (this.flameThrower.on) {
+        if (!G.sfx.flame.isPlaying) G.sfx.flame.play();
+    } else {
+        if (G.sfx.flame.isPlaying) G.sfx.flame.stop();
     }
 };
 
@@ -343,7 +354,7 @@ GameState.prototype.setupSnowBits = function() {
 
 GameState.prototype.setupSnowGibs = function() {
     this.snowgibs = game.add.emitter(0, 0, 1000);
-    this.snowgibs.makeParticles( 'sprites', [ 'snowbits1.png', 'snowbits1.png', 'snowbits1.png', 'snowbits2.png', 'snowbits2.png', 'snowbits3.png' ] );
+    this.snowgibs.makeParticles( 'sprites', [ 'snowbits1.png', 'snowbits1.png', 'snowbits1.png', 'snowbits2.png', 'snowbits2.png', 'snowbits2.png', 'snowbits2.png', 'snowbits3.png' ] );
     this.snowgibs.gravity = G.gravity;
     this.snowgibs.minParticleScale = 1;
     this.snowgibs.maxParticleScale = 1;

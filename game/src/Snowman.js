@@ -82,6 +82,7 @@ Snowman.prototype.update = function() {
     // Hit player
     if (this.myState == this.MOVING && game.physics.arcade.distanceBetween(G.player, this) < G.player.width * 4) {
         this.changeState(this.ATTACK);
+        G.sfx.snowhit.play();
         G.player.damage(1);
     }
 

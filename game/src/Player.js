@@ -53,7 +53,10 @@ Player.prototype.damage = function(amount) {
 
     Phaser.Sprite.prototype.damage.call(this, amount);
 
-    if (this.alive) this.animations.play('hurt');
+    if (this.alive) {
+        this.animations.play('hurt');
+        G.sfx.hit.play();
+    }
 };
 
 Player.prototype.update = function() {

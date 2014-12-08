@@ -74,6 +74,7 @@ Fuel.prototype.changeState = function(state) {
 
     if (state == this.COLLECTED) {
         G.score += G.fuelScore;
+        G.sfx.fuelget.play();
         this.kill();
     }
 };

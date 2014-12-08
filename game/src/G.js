@@ -110,16 +110,20 @@ G.showTutorial = function(flag, message) {
 };
 
 G.shake = function() {
-    var tx = game.camera.x + 30;
-    var ty = game.camera.y + 30;
+    var tx = game.camera.x + 5;
+    var ty = game.camera.y + 5;
+
+    if (game.tweens.isTweening(game.camera)) return;
 
     var tween;
     tween = game.add.tween(game.camera)
-        .to({ x: tx }, 40, Phaser.Easing.Sinusoidal.InOut, false, 0, 3, true)
+        .to({ x: tx }, 10, Phaser.Easing.Sinusoidal.InOut)
+        .yoyo(true)
         .start();
 
     tween = game.add.tween(game.camera)
-        .to({ y: ty }, 80, Phaser.Easing.Sinusoidal.InOut, false, 0, 3, true)
+        .to({ y: ty }, 10, Phaser.Easing.Sinusoidal.InOut)
+        .yoyo(true)
         .start();
 };
 

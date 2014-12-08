@@ -27,7 +27,7 @@ module.exports = function(grunt) {
       snd: {
         expand: true,
         cwd: 'game',
-        src: 'assets/snd/*',
+        src: 'assets/sfx/*',
         dest: 'build/'
       },
       fnt: {
